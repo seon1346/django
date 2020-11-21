@@ -14,8 +14,17 @@ class StoreAdmin(admin.ModelAdmin):
 class ItemAdmin(admin.ModelAdmin):
     list_display = ('id', 'name','total')
 
+
+class Item_StoreResource(Item_Store.ModelResource):
+    def before_save_instance(self, instance, using_transactions, dry_run):
+        instance.num = str(instance.username)
+
+    class Meta:
+        model = Item_Store
+
 class Item_StoreAdmin(admin.ModelAdmin):
     list_display = ('id', 'item','store','num')
+    resource_class = Item_StoreResource
 
 class DeliveryAdmin(admin.ModelAdmin):
     list_display = ('id', 'assigned_del_man','assigned_customer','Item_Store','del_num','complete')
