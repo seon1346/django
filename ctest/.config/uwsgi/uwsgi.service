@@ -3,7 +3,7 @@ Description=uWSGI service
 After=syslog.target
 
 [Service]
-ExecStart=/home/ubuntu/.pyenv/versions/uwsgi-env/bin/uwsgi -i /srv/django/ctest/.config/uwsgi/mysite.ini
+ExecStart=/home/ubuntu/.pyenv/versions/uwsgi-env/bin/uwsgi -i /srv/django/ctest/.config/uwsgi/wh.ini
 
 Restart=always
 KillSignal=SIGQUIT
