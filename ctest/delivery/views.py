@@ -82,9 +82,8 @@ def get_both_address(address):
 
 
 class item_assign(APIView):
-    del_num=0
     """
-        배달원 등록 API
+        상품 할당 API(주문 정보생성)
         ---
         # request json
             - c_id : 고객 id값
@@ -99,6 +98,7 @@ class item_assign(APIView):
             - 202, msg-고객사 재고 미달 : 고객사 재고 미달
 
     """
+    del_num = 0
     def post(self,request):
         item_assign.del_num+=1
         delivery_number=item_assign.del_num
@@ -191,7 +191,7 @@ class del_assign(APIView):
 
 class complete(APIView):
     """
-        배달원 등록 API
+        배달 완료처리 API
         ---
         # request json
             - del_num : 주문번호
