@@ -35,7 +35,7 @@ class Customer_register(APIView):
         try:
             new_address,old_address,x ,y=get_both_address(address)
         except:
-            return HttpResponse({'msg':'주소변환오류'},status=status.HTTP_501_NOT_IMPLEMENTED)
+            return HttpResponse(json.dumps({'msg':'주소변환오류'}),status=status.HTTP_501_NOT_IMPLEMENTED)
         detail = data['detail']
         Customer.objects.create(username=username, password=password, new_address=new_address,old_address=old_address, detailed_address=detail,x=x,y=y).save()
         return HttpResponse(status=status.HTTP_200_OK)
@@ -60,7 +60,7 @@ class Deliveryman_register(APIView):
         try:
             new_address,old_address,x ,y=get_both_address(address)
         except:
-            return HttpResponse({'msg':'주소변환오류'},status=status.HTTP_501_NOT_IMPLEMENTED)
+            return HttpResponse(json.dumps({'msg':'주소변환오류'}),status=status.HTTP_501_NOT_IMPLEMENTED)
         detail = data['detail']
         Del_man.objects.create(name=name, new_address=new_address,old_address=old_address, detailed_address=detail,x=x,y=y).save()
         return HttpResponse(status=status.HTTP_200_OK)
@@ -106,28 +106,28 @@ class item_assign(APIView):
         try:
             customer=Customer.objects.get(id=c_id)
         except:
-            return HttpResponse(json.dumps({'msg':'고객 정보 없음'}),status=status.HTTP_501_NOT_IMPLEMENTED)
+            return HttpResponse(json.dumps(json.dumps({'msg':'고객 정보 없음'})),status=status.HTTP_501_NOT_IMPLEMENTED)
         store_id=data['s_id']
         item_list=data['item_list']
         num_list = data['num_list']
         try:
             store = Store.objects.get(id=store_id)
         except:
-            return HttpResponse(json.dumps({'msg':'고객사 정보 없음'}),status=status.HTTP_501_NOT_IMPLEMENTED)
+            return HttpResponse(json.dumps(json.dumps({'msg':'고객사 정보 없음'})),status=status.HTTP_501_NOT_IMPLEMENTED)
         return_val=[]
         for i in range(len(item_list)):
             try:
                 item=Item.objects.get(id=item_list[i])
             except:
-                return HttpResponse(json.dumps({'msg': '상품 정보 오류'}), status=status.HTTP_501_NOT_IMPLEMENTED)
+                return HttpResponse(json.dumps(json.dumps({'msg': '상품 정보 오류'})), status=status.HTTP_501_NOT_IMPLEMENTED)
 
             try:
                 item_store=Item_Store.objects.get(item=item,store=store)
             except:
-                return HttpResponse(json.dumps({'msg': '고객사 상품 보유 정보 오류'}), status=status.HTTP_501_NOT_IMPLEMENTED)
+                return HttpResponse(json.dumps(json.dumps({'msg': '고객사 상품 보유 정보 오류'})), status=status.HTTP_501_NOT_IMPLEMENTED)
 
             if item_store.num-num_list[i]<0:
-                return HttpResponse(json.dumps({'msg': '고객사 재고 미달'}), status=status.HTTP_501_NOT_IMPLEMENTED)
+                return HttpResponse(json.dumps(json.dumps({'msg': '고객사 재고 미달'})), status=status.HTTP_501_NOT_IMPLEMENTED)
             item_store.num-=num_list[i]
             item.total-=num_list[i]
             item_store.save()
@@ -204,7 +204,7 @@ class complete(APIView):
         del_num=data['del_num']
         deliverys=Delivery.objects.filter(del_num=del_num)
         if len(deliverys)==0:
-            return HttpResponse({'msg':'주문정보 오류'},status=status.HTTP_501_NOT_IMPLEMENTED)
+            return HttpResponse(json.dumps({'msg':'주문정보 오류'}),status=status.HTTP_501_NOT_IMPLEMENTED)
         for d in deliverys:
             d.complete= True
             d.save()
