@@ -159,14 +159,14 @@ class del_assign(APIView):
         del_num=data['del_num']
         deliverys=Delivery.objects.filter(del_num=del_num)
         if len(deliverys)==0:
-            return HttpResponse({'msg': '주문정보없음'}, status=status.HTTP_501_NOT_IMPLEMENTED)
+            return HttpResponse(json.dumps({'msg': '주문정보없음'}), status=status.HTTP_501_NOT_IMPLEMENTED)
         try:
             customer=deliverys[0].assigned_customer
         except:
-            return HttpResponse({'msg':'고객 정보 없음'},status=status.HTTP_501_NOT_IMPLEMENTED)
+            return HttpResponse(json.dumps({'msg':'고객 정보 없음'}),status=status.HTTP_501_NOT_IMPLEMENTED)
         del_man_list = Del_man.objects.all()
         if len(del_man_list)==0:
-            return HttpResponse({'msg':'배달원 없음'},status=status.HTTP_501_NOT_IMPLEMENTED)
+            return HttpResponse(json.dumps({'msg':'배달원 없음'}),status=status.HTTP_501_NOT_IMPLEMENTED)
 
         c_gps=(customer.y,customer.x)
         choiced_del_man=None
